@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  clerkId String   @unique
+  email   String   @unique
+  name    String?
+  markers Marker[]
+
+  @@map("users")
+}
+
+model Group {
+  id         Int        @id @default(autoincrement())
+  title      String     @unique
+  color      String
+  categories Category[]
+
+  @@map("groups")
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  title     String     @unique
+  icon      String
+  template  String?
+  groupId   Int
+  group     Group      @relation(fields: [groupId], references: [id])
+  locations Location[]
+
+  @@map("categories")
+}
+
+model Location {
+  id          Int      @id
+  title       String
+  description String?   @db.Text
+  latitude    Float
+  longitude   Float
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  Marker      Marker[]
+
+  @@map("locations")
+}
+
+model Marker {
+  id         Int      @id @default(autoincrement())
+  locationId Int
+  userId     Int
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  location Location @relation(fields: [locationId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, locationId])
+  @@map("markers")
+}

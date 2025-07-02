@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Locations",
+    "color": "#3D3C3D",
+    "categories": [1, 2, 3]
+  },
+  {
+    "title": "Collectibles",
+    "color": "#BD7B48",
+    "categories": [5, 4, 7, 8, 9, 6]
+  },
+  {
+    "title": "Items",
+    "color": "#9D659E",
+    "categories": [10, 11, 12, 13]
+  },
+  {
+    "title": "Creatures",
+    "color": "#8E2B27",
+    "categories": [17, 15, 14, 16]
+  },
+  {
+    "title": "Other",
+    "color": "#7C7173",
+    "categories": [19, 20, 18]
+  }
+]

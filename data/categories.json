@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Location",
+    "icon": "location",
+    "template": null,
+    "groupId": 1
+  },
+  {
+    "title": "Point of Interest",
+    "icon": "point_of_interest",
+    "template": "**Rewards:**\n- ??",
+    "groupId": 1
+  },
+  {
+    "title": "Shortcut",
+    "icon": "shortcut",
+    "template": null,
+    "groupId": 1
+  },
+  {
+    "title": "Music Record",
+    "icon": "music_record",
+    "template": null,
+    "groupId": 2
+  },
+  {
+    "title": "Journal Entry",
+    "icon": "journal_entry",
+    "template": null,
+    "groupId": 2
+  },
+  {
+    "title": "Weapon",
+    "icon": "weapon",
+    "template": null,
+    "groupId": 2
+  },
+  {
+    "title": "Pictos",
+    "icon": "pictos",
+    "template": null,
+    "groupId": 2
+  },
+  {
+    "title": "Quest Item",
+    "icon": "quest_item",
+    "template": "**Location:** ??\n\n**Use:** ??",
+    "groupId": 2
+  },
+  {
+    "title": "Tint",
+    "icon": "tint",
+    "template": null,
+    "groupId": 2
+  },
+  {
+    "title": "Chroma",
+    "icon": "chroma",
+    "template": null,
+    "groupId": 3
+  },
+  {
+    "title": "Chroma Catalyst",
+    "icon": "chroma_catalyst",
+    "template": null,
+    "groupId": 3
+  },
+  {
+    "title": "Colour of Lumina",
+    "icon": "colour_of_lumina",
+    "template": null,
+    "groupId": 3
+  },
+  {
+    "title": "Recoat",
+    "icon": "recoat",
+    "template": null,
+    "groupId": 3
+  },
+  {
+    "title": "Story Boss",
+    "icon": "story_boss",
+    "template": "**Location:** ??\n\n**Rewards:**\n- ??",
+    "groupId": 4
+  },
+  {
+    "title": "Optional Boss",
+    "icon": "optional_boss",
+    "template": "**Location:** ??\n\n**Rewards:**\n- ??",
+    "groupId": 4
+  },
+  {
+    "title": "World Boss",
+    "icon": "world_boss",
+    "template": "**Location:** ??\n\n**Rewards:**\n- ??",
+    "groupId": 4
+  },
+  {
+    "title": "Enemy",
+    "icon": "enemy",
+    "template": "**Enemy Type:**\n- ??",
+    "groupId": 4
+  },
+  {
+    "title": "Merchant",
+    "icon": "merchant",
+    "template": "**Location:** ??\n\n**Inventory:**\n- ??",
+    "groupId": 5
+  },
+  {
+    "title": "Character",
+    "icon": "character",
+    "template": "**How to Begin:** ??  \n\n**Quest Steps:**\n- ??\n\n**Rewards:**\n- ??",
+    "groupId": 5
+  },
+  {
+    "title": "Lost Gestral",
+    "icon": "lost_gestral",
+    "template": null,
+    "groupId": 5
+  }
+]
