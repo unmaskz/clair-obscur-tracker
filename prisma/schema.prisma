@@ -48,7 +48,7 @@ model Category {
 model Location {
   id          Int      @id
   title       String
-  description String?   @db.Text
+  description String   @db.Text
   latitude    Float
   longitude   Float
   categoryId  Int

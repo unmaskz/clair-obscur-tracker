@@ -3,14 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 
-import { MapMarker, MarkerType } from "@/interfaces/markers.interface";
+import { useData } from "@/context/data";
+import { Group, Marker, MarkerType } from "@/types/data";
 
 interface MapboxMapProps {
-  markers: MapMarker[]
-  markerTypes: MarkerType[]
-  markerVisibility: Record<string, boolean>
-  onMarkerClick: (marker: MapMarker) => void
-  className?: string
+  markers: Marker[];
+  markerTypes: MarkerType[];
+  markerVisibility: Record<string, boolean>;
+  onMarkerClick: (marker: Marker) => void;
+  className?: string;
 }
 
 // Set your Mapbox access token here
@@ -23,6 +24,7 @@ export default function MapboxMap({
   onMarkerClick,
   className = "",
 }: MapboxMapProps) {
+  const { groups, categories, locations } = useData();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<{ [key: string]: mapboxgl.Marker }>({});
@@ -75,18 +77,17 @@ export default function MapboxMap({
     }
   }, []);
 
-  // Update markers when visibility or markers change
   useEffect(() => {
     if (!map.current || !mapLoaded) return;
 
-    // Clear existing markers
     Object.values(markersRef.current).forEach((marker) => marker.remove());
     markersRef.current = {};
 
-    // Add visible markers
     markers.forEach((marker) => {
-      const markerType = markerTypes.find((type) => type.id === marker.type);
-      if (!markerType || !markerVisibility[marker.type]) return;
+      const markerType = markerTypes.find((type) => type.id === marker.category.id);
+      if (!markerType || !markerVisibility[marker.category.id]) {
+        return;
+      }
 
       // Create marker element
       const el = document.createElement("div")
@@ -94,8 +95,8 @@ export default function MapboxMap({
       el.style.cssText = `
         width: 32px;
         height: 32px;
-        background-color: ${markerType.color};
-        border: 2px solid #1f2937;
+        background-color: ${marker.category.group && marker.category.group.color};
+        border: 1px solid #1f2937;
         border-radius: 50%;
         cursor: pointer;
         display: flex;
@@ -108,15 +109,14 @@ export default function MapboxMap({
 
       // Add icon (simplified for HTML)
       el.innerHTML = `
-        <div style="color: #1f2937; font-size: 14px; font-weight: bold;">
-          <span style="display: none" class="icomoon">${markerType.icon}</span>
-          ${getMarkerSymbol(markerType.title)}
+        <div style="color: #1f2937; font-size: 18px; font-weight: bold;">
+          <span class="icon-${marker.category.icon}" />
         </div>
         ${marker.completed ? '<div style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background-color: #10b981; border: 2px solid #1f2937; border-radius: 50%;"></div>' : ""}
       `;
 
       // Create and add marker
-      const mapboxMarker = new mapboxgl.Marker(el, { offset: [0, 0]}).setLngLat([marker.lng, marker.lat]).addTo(map.current!);
+      const mapboxMarker = new mapboxgl.Marker(el).setLngLat([marker.longitude, marker.latitude]).addTo(map.current!);
 
       // Add click handler
       el.addEventListener("click", () => {
@@ -126,39 +126,6 @@ export default function MapboxMap({
       markersRef.current[marker.id] = mapboxMarker;
     })
   }, [markers, markerTypes, markerVisibility, mapLoaded, onMarkerClick]);
-
-  // Helper function to get marker symbol
-  const getMarkerSymbol = (type: string): string => {
-    const symbols: { [key: string]: string } = {
-      Treasures: "💎",
-      Weapons: "⚔️",
-      Armor: "🛡️",
-      Secrets: "👁️",
-      Collectibles: "⭐",
-      "Key Locations": "📍",
-      Location: "📍",
-      "Point of Interest": "ℹ️",
-      Shortcut: "➡️",
-      "Music Record": "🎵",
-      "Journal Entry": "📖",
-      Weapon: "⚔️",
-      Pictos: "🖼️",
-      "Quest Item": "❓",
-      Tint: "🎨",
-      Chroma: "🌈",
-      "Chroma Catalyst": "🧪",
-      "Colour of Lumina": "✨",
-      Recoat: "🖌️",
-      "Story Boss": "💀",
-      "Optional Boss": "😈",
-      "World Boss": "🌍",
-      Enemy: "👾",
-      Character: "👤",
-      "Lost Gestral": "👻",
-      Merchant: "💰",
-    }
-    return symbols[type] || "📍"
-  }
 
   return (
     <div className={`relative w-full h-full ${className}`}>

@@ -92,3 +92,166 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@font-face {
+  font-family: 'icomoon';
+  src: url('/fonts/icomoon.eot?9f0u20');
+  src: url('/fonts/icomoon.eot?9f0u20#iefix') format('embedded-opentype'),
+    url('/fonts/icomoon.ttf?9f0u20') format('truetype'),
+    url('/fonts/icomoon.woff?9f0u20') format('woff'),
+    url('/fonts/icomoon.svg?9f0u20#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-world_boss:before {
+  content: "\e900";
+  color: #fff;
+}
+
+.icon-weapon:before {
+  content: "\e901";
+  color: #fff;
+}
+
+.icon-tint:before {
+  content: "\e902";
+  color: #fff;
+}
+
+.icon-story_boss:before {
+  content: "\e903";
+  color: #fff;
+}
+
+.icon-shortcut:before {
+  content: "\e904";
+  color: #fff;
+}
+
+.icon-secondary_quest:before {
+  content: "\e905";
+  color: #fff;
+}
+
+.icon-rest_point:before {
+  content: "\e906";
+  color: #fff;
+}
+
+.icon-recoat:before {
+  content: "\e907";
+  color: #fff;
+}
+
+.icon-quest_item:before {
+  content: "\e908";
+  color: #fff;
+}
+
+.icon-primary_quest:before {
+  content: "\e909";
+  color: #fff;
+}
+
+.icon-point_of_interest:before {
+  content: "\e90a";
+  color: #fff;
+}
+
+.icon-pictos:before {
+  content: "\e90b";
+  color: #fff;
+}
+
+.icon-paint_cage:before {
+  content: "\e90c";
+  color: #fff;
+}
+
+.icon-optional_boss:before {
+  content: "\e90d";
+  color: #fff;
+}
+
+.icon-music_record:before {
+  content: "\e90e";
+  color: #fff;
+}
+
+.icon-miscellaneous:before {
+  content: "\e90f";
+  color: #fff;
+}
+
+.icon-merchant:before {
+  content: "\e910";
+  color: #fff;
+}
+
+.icon-lost_gestral:before {
+  content: "\e911";
+  color: #fff;
+}
+
+.icon-location:before {
+  content: "\e912";
+  color: #fff;
+}
+
+.icon-journal_entry:before {
+  content: "\e913";
+  color: #fff;
+}
+
+.icon-enemy:before {
+  content: "\e914";
+  color: #fff;
+}
+
+.icon-easter_egg:before {
+  content: "\e915";
+  color: #fff;
+}
+
+.icon-colour_of_lumina:before {
+  content: "\e916";
+  color: #fff;
+}
+
+.icon-chroma_catalyst:before {
+  content: "\e917";
+  color: #fff;
+}
+
+.icon-chroma:before {
+  content: "\e918";
+  color: #fff;
+}
+
+.icon-character:before {
+  content: "\e919";
+  color: #fff;
+}
+
+.icon-area:before {
+  content: "\e91a";
+  color: #fff;
+}
