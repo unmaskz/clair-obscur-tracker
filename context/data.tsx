@@ -4,40 +4,37 @@ import { createContext, useContext, useState, ReactNode, Dispatch, SetStateActio
 
 import type { Group, Location, Category } from "@/types/data";
 
-type DataContextType = {
-  groups: Group[]
-  locations: Location[]
-  categories: Category[]
-  setGroups: Dispatch<SetStateAction<Group[]>>
-  setLocations: Dispatch<SetStateAction<Location[]>>
-  setCategories: Dispatch<SetStateAction<Category[]>>
+interface LocationWithMarker extends Location {
+  completed?: boolean;
 }
 
-const DataContext = createContext<DataContextType | null>(null);
+interface DataContextType {
+  groups: Group[];
+  categories: Category[];
+  locations: LocationWithMarker[];
+}
 
-export function DataProvider({ children, initialData }: {
+const DataContext = createContext<DataContextType | undefined>(undefined);
+
+interface DataProviderProps {
+  groups: Group[];
+  categories: Category[];
+  locations: Location[];
   children: ReactNode;
-  initialData: {
-    groups: Group[];
-    locations: Location[];
-    categories: Category[];
-  }
-}) {
-  const [groups, setGroups] = useState(initialData.groups);
-  const [locations, setLocations] = useState(initialData.locations);
-  const [categories, setCategories] = useState(initialData.categories);
+}
 
+export function DataProvider({ groups, categories, locations, children }: DataProviderProps) {
   return (
-    <DataContext.Provider value={{ groups, locations, categories, setGroups, setLocations, setCategories }}>
+    <DataContext.Provider value={{ groups, categories, locations }}>
       {children}
     </DataContext.Provider>
   );
 }
 
-export const useData = () => {
+export function useData() {
   const context = useContext(DataContext);
   if (!context) {
     throw new Error("useData must be used within a DataProvider");
   }
   return context;
-};
+}

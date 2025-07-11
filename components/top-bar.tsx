@@ -24,7 +24,7 @@ export const Topbar = ({ filteredMarkers }: Props) => {
             {filteredMarkers.length} markers visible
           </Badge>
         </div>
-        <div>
+      <div>
         <SignedOut>
           <SignInButton />
           <SignUpButton>

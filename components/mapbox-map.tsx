@@ -110,7 +110,7 @@ export default function MapboxMap({
       // Add icon (simplified for HTML)
       el.innerHTML = `
         <div style="color: #1f2937; font-size: 18px; font-weight: bold;">
-          <span class="icon-${marker.category.icon}" />
+          <span class="text-white icon-${marker.category.icon}" />
         </div>
         ${marker.completed ? '<div style="position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background-color: #10b981; border: 2px solid #1f2937; border-radius: 50%;"></div>' : ""}
       `;

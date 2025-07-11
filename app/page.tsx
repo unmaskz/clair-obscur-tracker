@@ -8,18 +8,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import MapboxMap from "@/components/mapbox-map";
-import { Topbar } from "@/components/top-bar";
 import { Sidebar } from "@/components/sidebar";
 import { useData } from "@/context/data";
+import { useMap } from "@/context/map";
 import { Marker, MarkerType } from "@/types/data";
 
 const initialMarkerVisibility: Record<number, boolean> = {}
 const initialMarkerTypes: MarkerType[] = []
 
-export default function MapGenieClone() {
+export default function MapPage() {
   const { groups, categories, locations } = useData();
+  const { selectedMarker, setSelectedMarker } = useMap();
   const [markers, setMarkers] = useState<Marker[]>([]);
-  const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [markerVisibility, setMarkerVisibility] = useState<Record<number, boolean>>(initialMarkerVisibility);
 
@@ -27,7 +27,7 @@ export default function MapGenieClone() {
     initialMarkerTypes.push({
       id: category.id,
       title: category.title,
-      icon: <MapPin className="w-4 h-4" />,
+      icon: <span className={`text-lg icon-${category.icon}`} />,
       color: "#DDA0DD",
       visible: true,
     })
@@ -37,7 +37,7 @@ export default function MapGenieClone() {
   useEffect(() => {
     const newMarkers: Marker[] = locations.map((location) => ({
       ...location,
-      completed: false,
+      completed: location.completed ? true : false || false,
     }))
     setMarkers(newMarkers)
   }, [locations])
@@ -45,10 +45,10 @@ export default function MapGenieClone() {
   const markerTypes: MarkerType[] = categories.map((category: any) => ({
     id: category.id,
     title: category.title,
-    icon: <MapPin className="w-4 h-4" />,
+    icon: <span className={`text-lg icon-${category.icon}`} />,
     color: "#DDA0DD",
     visible: true,
-  }))
+  }));
 
   const filteredMarkers = markers.filter((marker) => {
     const typeVisible = markerVisibility[marker.category.id]
@@ -62,15 +62,38 @@ export default function MapGenieClone() {
     setSelectedMarker(marker);
   }
 
-  const toggleMarkerCompletion = (markerId: number) => {
-    setMarkers((prev) =>
-      prev.map((marker) => (marker.id === markerId ? { ...marker, completed: !marker.completed } : marker)),
-    )
-
-    if (selectedMarker && selectedMarker.id === markerId) {
-      setSelectedMarker({ ...selectedMarker, completed: !selectedMarker.completed })
+  const toggleMarkerCompletion = async (markerId: number) => {
+    try {
+      setMarkers((prev) =>
+        prev.map((marker) => marker.id === markerId ? { ...marker, completed: !marker.completed } : marker)
+      );
+  
+      if (selectedMarker?.id === markerId) {
+        setSelectedMarker({ ...selectedMarker, completed: !selectedMarker.completed });
+      }
+  
+      const response = await fetch('/api/complete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          locationId: markerId,
+        }),
+      });
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        console.error('API error:', result.error || result.message);
+      } else {
+        console.log('API success:', result.message);
+      }
+    } catch (err) {
+      console.error('Error toggling marker:', err);
     }
-  }
+  };
+  
 
   const getMarkerTypeInfo = (typeId: number) => {
     return markerTypes.find((type) => type.id === typeId)
@@ -81,24 +104,27 @@ export default function MapGenieClone() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-900 text-white">
-      <Sidebar locations={locations} markerVisibility={markerVisibility} setMarkerVisibility={setMarkerVisibility} markers={markers} markerTypes={markerTypes} searchQuery={searchQuery} setSearchQuery={setSearchQuery} filteredMarkers={filteredMarkers} />
+    <div className="relative h-screen bg-gray-900 text-white">
+      <Sidebar
+        locations={locations}
+        markerVisibility={markerVisibility}
+        setMarkerVisibility={setMarkerVisibility}
+        markers={markers}
+        markerTypes={markerTypes}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        filteredMarkers={filteredMarkers}
+      />
 
-      <div className="flex-1 relative overflow-hidden">
-        <Topbar filteredMarkers={filteredMarkers} />
+      <div className="w-full h-full relative overflow-hidden">
+        <MapboxMap
+          markers={filteredMarkers}
+          markerTypes={markerTypes}
+          markerVisibility={markerVisibility}
+          onMarkerClick={handleMarkerClick}
+          className="w-full h-full"
+        />
 
-        {/* Mapbox Map */}
-        <div className="w-full h-full pt-16">
-          <MapboxMap
-            markers={filteredMarkers}
-            markerTypes={markerTypes}
-            markerVisibility={markerVisibility}
-            onMarkerClick={handleMarkerClick}
-            className="w-full h-full"
-          />
-        </div>
-
-        {/* Selected Marker Info */}
         {selectedMarker && (
           <div className="absolute bottom-4 left-4 right-4 max-w-md mx-auto z-20">
             <Card className="bg-gray-800/95 backdrop-blur-sm border-gray-600 shadow-xl">
@@ -106,15 +132,13 @@ export default function MapGenieClone() {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center space-x-3">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center border-2"
+                      className="w-10 h-10 rounded-full flex items-center justify-center border-2"
                       style={{
-                        backgroundColor: getGroupInfo(selectedMarker?.category?.groupId)?.color,
+                        backgroundColor: getGroupInfo(selectedMarker.category.groupId)?.color,
                         borderColor: "#1f2937",
                       }}
                     >
-                      <div className="text-gray-800 text-sm font-bold">
-                        <span className={`icon-${selectedMarker.category.icon}`}></span>
-                      </div>
+                      <span className={`text-white text-xl icon-${selectedMarker.category.icon}`}></span>
                     </div>
                     <div>
                       <h3 className="text-white font-semibold text-lg">{selectedMarker.title}</h3>
@@ -154,5 +178,5 @@ export default function MapGenieClone() {
         )}
       </div>
     </div>
-  )
+  );
 }
